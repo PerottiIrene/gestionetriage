@@ -30,17 +30,17 @@ public class PazienteServiceImpl implements PazienteService {
 
 	@Override
 	@Transactional
-	public void aggiorna(Paziente pazienteInstance) {
-		pazienteRepository.save(pazienteInstance);
+	public Paziente aggiorna(Paziente pazienteInstance) {
+		return pazienteRepository.save(pazienteInstance);
 
 	}
 
 	@Override
 	@Transactional
-	public void inserisciNuovo(Paziente pazienteInstance) {
+	public Paziente inserisciNuovo(Paziente pazienteInstance) {
 
 		pazienteInstance.setStato(StatoPaziente.IN_ATTESA_VISITA);
-		pazienteRepository.save(pazienteInstance);
+		return pazienteRepository.save(pazienteInstance);
 
 	}
 

@@ -10,9 +10,9 @@ public interface PazienteService {
 
 	public Paziente caricaSingoloElemento(Long id);
 
-	public void aggiorna(Paziente pazienteInstance);
+	public Paziente aggiorna(Paziente pazienteInstance);
 
-	public void inserisciNuovo(Paziente pazienteInstance);
+	public Paziente inserisciNuovo(Paziente pazienteInstance);
 
 	public void rimuovi(Long idToRemove);
 }
