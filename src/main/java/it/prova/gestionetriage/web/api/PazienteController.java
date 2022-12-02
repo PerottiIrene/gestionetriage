@@ -8,13 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.prova.gestionetriage.dto.PazienteDTO;
+import it.prova.gestionetriage.dto.PazienteDTO;
 import it.prova.gestionetriage.exception.IdNotNullForInsertException;
+import it.prova.gestionetriage.exception.OperazioneNegataException;
 import it.prova.gestionetriage.exception.PazienteNotFoundException;
+import it.prova.gestionetriage.exception.PazienteNotFoundException;
+import it.prova.gestionetriage.model.Paziente;
 import it.prova.gestionetriage.model.Paziente;
 import it.prova.gestionetriage.service.PazienteService;
 import it.prova.gestionetriage.service.PazienteService;
@@ -54,6 +59,20 @@ public class PazienteController {
 			throw new PazienteNotFoundException("Paziente not found con id: " + id);
 
 		return PazienteDTO.buildPazienteDTOFromModel(paziente);
+
+	}
+
+	@PutMapping("/{id}")
+	public PazienteDTO update(@Valid @RequestBody PazienteDTO pazienteInput, @PathVariable(required = true) Long id) {
+
+		Paziente paziente = pazienteService.caricaSingoloElemento(id);
+
+		if (paziente == null)
+			throw new PazienteNotFoundException("Paziente not found con id: " + id);
+
+		pazienteInput.setId(id);
+		Paziente pazienteAggiornato = pazienteService.aggiorna(pazienteInput.buildPazienteModel());
+		return PazienteDTO.buildPazienteDTOFromModel(pazienteAggiornato);
 
 	}
 
