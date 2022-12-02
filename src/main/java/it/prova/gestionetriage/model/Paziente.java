@@ -46,6 +46,23 @@ public class Paziente {
 		this.codiceDottore = codiceDottore;
 		this.stato = stato;
 	}
+	
+	public Paziente(Long id, String nome, String cognome, String codiceFiscale, Date dataRegistrazione) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.codiceFiscale = codiceFiscale;
+		this.dataRegistrazione = dataRegistrazione;
+	}
+	
+	public Paziente(String nome, String cognome, String codiceFiscale, Date dataRegistrazione) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.codiceFiscale = codiceFiscale;
+		this.dataRegistrazione = dataRegistrazione;
+	}
 
 	public Long getId() {
 		return id;

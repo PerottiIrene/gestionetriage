@@ -6,13 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.prova.gestionetriage.exception.PazienteNonDimessoException;
 import it.prova.gestionetriage.model.Paziente;
+import it.prova.gestionetriage.model.StatoPaziente;
 import it.prova.gestionetriage.repository.paziente.PazienteRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class PazienteServiceImpl implements PazienteService{
-	
+public class PazienteServiceImpl implements PazienteService {
+
 	@Autowired
 	private PazienteRepository pazienteRepository;
 
@@ -30,21 +32,28 @@ public class PazienteServiceImpl implements PazienteService{
 	@Transactional
 	public void aggiorna(Paziente pazienteInstance) {
 		pazienteRepository.save(pazienteInstance);
-		
+
 	}
 
 	@Override
 	@Transactional
 	public void inserisciNuovo(Paziente pazienteInstance) {
+
+		pazienteInstance.setStato(StatoPaziente.IN_ATTESA_VISITA);
 		pazienteRepository.save(pazienteInstance);
-		
+
 	}
 
 	@Override
 	@Transactional
 	public void rimuovi(Long idToRemove) {
-		// TODO Auto-generated method stub
-		
+
+		Paziente pazienteInstance = caricaSingoloElemento(idToRemove);
+		if (!(pazienteInstance.getStato() == StatoPaziente.DIMESSO)) {
+			throw new PazienteNonDimessoException("il paziente non e' stato dimesso, impossibile eliminare");
+		}
+		pazienteRepository.deleteById(idToRemove);
+
 	}
 
 }

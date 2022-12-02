@@ -27,38 +27,38 @@ public class UtenteServiceImpl implements UtenteService {
 
 	public List<Utente> listAllUtenti() {
 		
-		Utente utenteInSessione=utenteInSessione();
-		if(!utenteInSessione.isAdmin()) {
-			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
-		}
+//		Utente utenteInSessione=utenteInSessione();
+//		if(!utenteInSessione.isAdmin()) {
+//			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
+//		}
 		return (List<Utente>) repository.findAll();
 	}
 
 	public Utente caricaSingoloUtente(Long id) {
 		
-		Utente utenteInSessione=utenteInSessione();
-		if(!utenteInSessione.isAdmin()) {
-			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
-		}
+//		Utente utenteInSessione=utenteInSessione();
+//		if(!utenteInSessione.isAdmin()) {
+//			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
+//		}
 		return repository.findById(id).orElse(null);
 	}
 
 	public Utente caricaSingoloUtenteConRuoli(Long id) {
 		
-		Utente utenteInSessione=utenteInSessione();
-		if(!utenteInSessione.isAdmin()) {
-			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
-		}
+//		Utente utenteInSessione=utenteInSessione();
+//		if(!utenteInSessione.isAdmin()) {
+//			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
+//		}
 		return repository.findByIdConRuoli(id).orElse(null);
 	}
 
 	@Transactional
 	public Utente aggiorna(Utente utenteInstance) {
 		
-		Utente utenteInSessione=utenteInSessione();
-		if(!utenteInSessione.isAdmin()) {
-			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
-		}
+//		Utente utenteInSessione=utenteInSessione();
+//		if(!utenteInSessione.isAdmin()) {
+//			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
+//		}
 		// deve aggiornare solo nome, cognome, username, ruoli
 		Utente utenteReloaded = repository.findById(utenteInstance.getId()).orElse(null);
 		if (utenteReloaded == null)
@@ -73,10 +73,10 @@ public class UtenteServiceImpl implements UtenteService {
 	@Transactional
 	public Utente inserisciNuovo(Utente utenteInstance) {
 		
-		Utente utenteInSessione=utenteInSessione();
-		if(!utenteInSessione.isAdmin()) {
-			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
-		}
+//		Utente utenteInSessione=utenteInSessione();
+//		if(!utenteInSessione.isAdmin()) {
+//			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
+//		}
 		utenteInstance.setStato(StatoUtente.CREATO);
 		utenteInstance.setPassword(passwordEncoder.encode(utenteInstance.getPassword()));
 		utenteInstance.setDateCreated(new Date());
@@ -86,10 +86,10 @@ public class UtenteServiceImpl implements UtenteService {
 	@Transactional
 	public void rimuovi(Long idToRemove) {
 		
-		Utente utenteInSessione=utenteInSessione();
-		if(!utenteInSessione.isAdmin()) {
-			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
-		}
+//		Utente utenteInSessione=utenteInSessione();
+//		if(!utenteInSessione.isAdmin()) {
+//			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
+//		}
 		repository.deleteById(idToRemove);
 	}
 
@@ -109,10 +109,10 @@ public class UtenteServiceImpl implements UtenteService {
 	@Transactional
 	public void changeUserAbilitation(Long utenteInstanceId) {
 		
-		Utente utenteInSessione=utenteInSessione();
-		if(!utenteInSessione.isAdmin()) {
-			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
-		}
+//		Utente utenteInSessione=utenteInSessione();
+//		if(!utenteInSessione.isAdmin()) {
+//			throw new OperazioneNegataException("accesso autorizzato solamente ad utenti admin");
+//		}
 		Utente utenteInstance = caricaSingoloUtente(utenteInstanceId);
 		if (utenteInstance == null)
 			throw new RuntimeException("Elemento non trovato.");
@@ -123,22 +123,23 @@ public class UtenteServiceImpl implements UtenteService {
 			utenteInstance.setStato(StatoUtente.DISABILITATO);
 		else if (utenteInstance.getStato().equals(StatoUtente.DISABILITATO))
 			utenteInstance.setStato(StatoUtente.ATTIVO);
+		repository.save(utenteInstance);
 	}
 
 	public Utente findByUsername(String username) {
 		return repository.findByUsername(username).orElse(null);
 	}
 
-	@Override
-	public Utente utenteInSessione() {
-		String username=SecurityContextHolder.getContext().getAuthentication().getName();
-		return repository.findByUsername(username).orElse(null);
-	}
+//	@Override
+//	public Utente utenteInSessione() {
+//		String username=SecurityContextHolder.getContext().getAuthentication().getName();
+//		return repository.findByUsername(username).orElse(null);
+//	}
 
-	@Override
-	public boolean isThisRole(String ruoloUtente) {
-		return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(roleItem -> roleItem.getAuthority().equals(ruoloUtente));
-	}
+//	@Override
+//	public boolean isThisRole(String ruoloUtente) {
+//		return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(roleItem -> roleItem.getAuthority().equals(ruoloUtente));
+//	}
 
 
 }

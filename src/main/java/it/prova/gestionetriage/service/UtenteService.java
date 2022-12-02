@@ -8,7 +8,7 @@ import it.prova.gestionetriage.model.Utente;
 
 public interface UtenteService {
 
-	public Utente utenteInSessione();
+//	public Utente utenteInSessione();
 	
 	public List<Utente> listAllUtenti();
 
@@ -32,7 +32,7 @@ public interface UtenteService {
 
 	public Utente findByUsername(String username);
 	
-	public boolean isThisRole(String ruolo);
+//	public boolean isThisRole(String ruolo);
 	
 
 }
