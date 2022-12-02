@@ -15,4 +15,6 @@ public interface PazienteService {
 	public Paziente inserisciNuovo(Paziente pazienteInstance);
 
 	public void rimuovi(Long idToRemove);
+	
+	public void dimetti(Long id);
 }

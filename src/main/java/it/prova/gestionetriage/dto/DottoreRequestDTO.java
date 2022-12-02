@@ -6,6 +6,7 @@ public class DottoreRequestDTO {
 	private String nome;
 	private String cognome;
 	private String codiceDottore;
+	private String codiceFiscalePazienteAttualmenteInVisita;
 	
 	public DottoreRequestDTO() {}
 
@@ -15,6 +16,12 @@ public class DottoreRequestDTO {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.codiceDottore = codiceDottore;
+	}
+	
+	public DottoreRequestDTO(String codiceDottore, String codiceFiscalePazienteAttualmenteInVisita) {
+		super();
+		this.codiceDottore = codiceDottore;
+		this.codiceFiscalePazienteAttualmenteInVisita = codiceFiscalePazienteAttualmenteInVisita;
 	}
 
 	public Long getId() {
@@ -47,6 +54,14 @@ public class DottoreRequestDTO {
 
 	public void setCodiceDottore(String codiceDottore) {
 		this.codiceDottore = codiceDottore;
+	}
+
+	public String getCodiceFiscalePazienteAttualmenteInVisita() {
+		return codiceFiscalePazienteAttualmenteInVisita;
+	}
+
+	public void setCodiceFiscalePazienteAttualmenteInVisita(String codiceFiscalePazienteAttualmenteInVisita) {
+		this.codiceFiscalePazienteAttualmenteInVisita = codiceFiscalePazienteAttualmenteInVisita;
 	}
 	
 	

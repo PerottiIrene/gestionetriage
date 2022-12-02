@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.gestionetriage.exception.PazienteNonDimessoException;
+import it.prova.gestionetriage.exception.PazienteNotFoundException;
 import it.prova.gestionetriage.model.Paziente;
 import it.prova.gestionetriage.model.StatoPaziente;
 import it.prova.gestionetriage.repository.paziente.PazienteRepository;
@@ -54,6 +55,20 @@ public class PazienteServiceImpl implements PazienteService {
 		}
 		pazienteRepository.deleteById(idToRemove);
 
+	}
+
+	@Override
+	public void dimetti(Long id) {
+		
+		Paziente paziente=pazienteRepository.findById(id).orElse(null);
+		
+		if (paziente == null)
+			throw new PazienteNotFoundException("Paziente non trovato con id: " + id);
+
+		paziente.setStato(StatoPaziente.DIMESSO);
+		paziente.setCodiceDottore(null);
+		pazienteRepository.save(paziente);
+		
 	}
 
 }

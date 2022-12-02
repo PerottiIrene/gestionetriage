@@ -2,14 +2,20 @@ package it.prova.gestionetriage.web.api;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import it.prova.gestionetriage.dto.DottoreRequestDTO;
 import it.prova.gestionetriage.dto.DottoreResponseDTO;
 import it.prova.gestionetriage.dto.PazienteDTO;
 import it.prova.gestionetriage.exception.PazienteNotFoundException;
@@ -81,5 +87,25 @@ public class AssegnaPazienteController {
 		pazienteService.aggiorna(paziente);
 		return result;
 	}
+	
+
+	@PostMapping("/dimetti/{id}")
+	@ResponseStatus
+	public DottoreResponseDTO dimetti(@Valid @RequestBody DottoreRequestDTO dottoreRequest,
+			@PathVariable(required = true) Long id) {
+		
+		pazienteService.dimetti(id);
+		
+		ResponseEntity<DottoreResponseDTO> response = webClient.post().uri("/ricovera")
+				.body(Mono.just(new DottoreRequestDTO(dottoreRequest.getCodiceDottore(),
+						dottoreRequest.getCodiceFiscalePazienteAttualmenteInVisita())), DottoreRequestDTO.class)
+				.retrieve().toEntity(DottoreResponseDTO.class).block();
+
+		return new DottoreResponseDTO(response.getBody().getNome(), response.getBody().getCognome(),
+				response.getBody().getCodiceDottore(), response.getBody().isInServizio(),
+				response.getBody().isInVisita());
+
+	}
+
 
 }
